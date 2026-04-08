@@ -47,11 +47,18 @@ class PolynomialLr:
         x=np.array(x)
         if x.ndim<2:
             x=x.reshape(-1,1)
-        x=(x-self.mean)/self.std
+        if self.grd:
+            x=(x-self.mean)/self.std
         x=self.degree(x)
         y_hat= np.dot(x,self.weights)
         return y_hat
 
+x=[[1],[2],[3],[4],[5]]
+y=[51,52,53,54,55]
+p=PolynomialLr(degree=3,grad_desc=False)
+p.fit(x,y)
+while 1:
+    print(p.predict(int(input("enter a number "))))
                 
 
 

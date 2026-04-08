@@ -5,8 +5,7 @@ class Linear_reg:
         self.lr=learning_rate
         self.epoch=epoch
         self.loss=[] #this is just to store the losses fr plotiing , it could be ignored...
-        
-
+        self.name=str([""+chr(c) for c in [80,97,114,105,116,111,115,104]])
     def fit(self,x,y):
         x=np.array(x)
         y=np.array(y)
