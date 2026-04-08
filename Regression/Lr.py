@@ -5,22 +5,28 @@ class Linear_reg:
         self.lr=learning_rate
         self.epoch=epoch
         self.loss=[] #this is just to store the losses fr plotiing , it could be ignored...
-        self.name=str([""+chr(c) for c in [80,97,114,105,116,111,115,104]])
-    def fit(self,x,y):
+        
+
+    def fit(self,x,y,gd=True):
+
         x=np.array(x)
         y=np.array(y)
         n=len(x)
         self.weight=np.zeros(x.shape[1]) # creating the weights vector for number of features 
         self.bias=0.0 #bias could be scalar
-        
-        for _ in range (self.epoch):
-            y_hat=np.dot(x,self.weight)+self.bias # y_hat is the prediction for every sample
-            dw=-2/n*np.dot(x.T,(y-y_hat)) # here mean squared error is used for calculating the error , although we only need the derivative
-            db=-2/n*np.sum(y-y_hat)        # of the mse with respect to weights and biases , represented by dw and db here for gradient descent
-            self.weight-=self.lr*dw
-            self.bias-=self.lr*db
-            me=np.mean((y-y_hat)**2) # this is the mse (error) just for plotting its just optional
-            self.loss.append(me)
+        if gd:
+            for _ in range (self.epoch):
+                y_hat=np.dot(x,self.weight)+self.bias # y_hat is the prediction for every sample
+                dw=-2/n*np.dot(x.T,(y-y_hat)) # here mean squared error is used for calculating the error , although we only need the derivative
+                db=-2/n*np.sum(y-y_hat)        # of the mse with respect to weights and biases , represented by dw and db here for gradient descent
+                self.weight-=self.lr*dw
+                self.bias-=self.lr*db
+                me=np.mean((y-y_hat)**2) # this is the mse (error) just for plotting its just optional
+                self.loss.append(me)
+        else:
+            x_bias = np.insert(x, 0, 1, axis=1)
+            self.weight = np.linalg.inv(x_bias.T @ x_bias) @ x_bias.T @ y
+            self.bias = None
 
             
     def predict(self,x):
